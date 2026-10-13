@@ -29,6 +29,7 @@ let lastFrameTime = performance.now();
 // Таймеры дельты, симулятора и клатча
 let deltaHideTimer = null;
 let clutchInterval = null;
+let simWasActiveBeforeClutch = false;
 let simThrottleTimer = null;
 
 // Web Audio API синтезатор стука сердца
@@ -932,12 +933,26 @@ function applySettings() {
     renderBpmNumber(currentBpm, false);
 }
 
+function stopClutchLoop(restoreSimState) {
+    if (clutchInterval) {
+        clearInterval(clutchInterval);
+        clutchInterval = null;
+    }
+    setText("btnClutchSim", "🔥 Симуляция клатча (65 → 165 BPM)");
+
+    if (restoreSimState && !simWasActiveBeforeClutch) {
+        simActive = false;
+        setChecked("simToggle", false);
+        const sliderVal = parseInt(getVal("simBpmRange", 75), 10) || 75;
+        sendWs({ type: "sim_toggle", active: false, val: sliderVal });
+        updateStatusHeader();
+    }
+}
+
 function toggleSimulator(checked) {
     simActive = Boolean(checked);
     if (!simActive && clutchInterval) {
-        clearInterval(clutchInterval);
-        clutchInterval = null;
-        setText("btnClutchSim", "🔥 Симуляция клатча (65 → 165 BPM)");
+        stopClutchLoop(false);
     }
     const sliderVal = parseInt(getVal("simBpmRange", 75), 10) || 75;
     sendWs({ type: "sim_toggle", active: simActive, val: sliderVal });
@@ -965,12 +980,11 @@ function onSimSliderInput(val) {
 
 function startClutchSimulation() {
     if (clutchInterval) {
-        clearInterval(clutchInterval);
-        clutchInterval = null;
-        setText("btnClutchSim", "🔥 Симуляция клатча (65 → 165 BPM)");
+        stopClutchLoop(true);
         return;
     }
 
+    simWasActiveBeforeClutch = simActive;
     setChecked("simToggle", true);
     simActive = true;
     setText("btnClutchSim", "⏹ Остановить симуляцию клатча");
@@ -980,9 +994,7 @@ function startClutchSimulation() {
 
     const pushStep = () => {
         if (step >= keyframes.length) {
-            clearInterval(clutchInterval);
-            clutchInterval = null;
-            setText("btnClutchSim", "🔥 Симуляция клатча (65 → 165 BPM)");
+            stopClutchLoop(true);
             return;
         }
         const bpm = keyframes[step++];

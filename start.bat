@@ -25,7 +25,7 @@ if exist "%VENV_DIR%\Scripts\pythonw.exe" (
     )
 )
 
-:: 2. Если venv нет — ищем системный Python (python -> py -> прямой путь 3.14)
+:: 2. Если venv нет — ищем системный Python (python -> py -> стандартные пути Windows)
 set "SYS_PYTHON="
 
 python -c "import sys; assert sys.version_info >= (3, 11)" >nul 2>&1
@@ -37,8 +37,16 @@ if not defined SYS_PYTHON (
 )
 
 if not defined SYS_PYTHON (
-    if exist "%LOCALAPPDATA%\Python\pythoncore-3.14-64\python.exe" (
-        set "SYS_PYTHON="%LOCALAPPDATA%\Python\pythoncore-3.14-64\python.exe""
+    for %%P in (
+        "%LOCALAPPDATA%\Programs\Python\Python314\python.exe"
+        "%LOCALAPPDATA%\Programs\Python\Python313\python.exe"
+        "%LOCALAPPDATA%\Programs\Python\Python312\python.exe"
+        "%LOCALAPPDATA%\Programs\Python\Python311\python.exe"
+        "%LOCALAPPDATA%\Python\pythoncore-3.14-64\python.exe"
+    ) do (
+        if not defined SYS_PYTHON if exist %%P (
+            set "SYS_PYTHON=%%P"
+        )
     )
 )
 
@@ -52,7 +60,11 @@ if not defined SYS_PYTHON (
 echo Создание виртуального окружения и установка пакетов...
 %SYS_PYTHON% -m venv "%VENV_DIR%"
 "%VENV_DIR%\Scripts\python.exe" -m pip install --upgrade pip
-"%VENV_DIR%\Scripts\pip.exe" install fastapi uvicorn bleak websockets pystray pillow
+if exist "requirements.txt" (
+    "%VENV_DIR%\Scripts\pip.exe" install -r requirements.txt
+) else (
+    "%VENV_DIR%\Scripts\pip.exe" install fastapi uvicorn bleak websockets pystray pillow
+)
 if !ERRORLEVEL! NEQ 0 (
     echo ОШИБКА: Не удалось установить зависимости.
     rmdir /s /q "%VENV_DIR%"
