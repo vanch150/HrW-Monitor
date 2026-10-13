@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HR Monitor Pro</title>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@600;700;800&family=Montserrat:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="mode-card" data-layout="classic">
+
+    <button class="settings-trigger" onclick="togglePanel()" title="Открыть настройки HUD">
+        <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+        </svg>
+    </button>
+
+    <aside class="panel" id="panel">
+        <div class="panel-header">
+            <div class="panel-title-wrap">
+                <span class="status-dot" id="panelStatusDot"></span>
+                <div>
+                    <h2>HR Monitor Pro</h2>
+                    <div class="bt-status-text" id="btStatusText">Подключение...</div>
+                </div>
+            </div>
+            <button class="btn-close" onclick="togglePanel()" title="Закрыть">&times;</button>
+        </div>
+
+        <div class="session-stats-bar">
+            <div class="stat-pill">
+                <span class="stat-lbl">AVG</span>
+                <span class="stat-val" id="statAvg">--</span>
+            </div>
+            <div class="stat-pill">
+                <span class="stat-lbl">MAX</span>
+                <span class="stat-val" id="statPeak">0</span>
+            </div>
+            <button type="button" class="btn-ui btn-mini" onclick="resetSessionPeak()" title="Сбросить пик и статистику сессии">
+                Сброс пика
+            </button>
+            <button type="button" class="btn-ui btn-mini" onclick="exportSessionCsv()" title="Скачать CSV-отчёт сессии">
+                CSV
+            </button>
+        </div>
+
+        <div class="grp">
+            <div class="grp-title">СТИЛЬ HUD (ФОРМ-ФАКТОР)</div>
+            <select id="sLayout" class="ui-select">
+                <option value="classic">💎 Classic Card (Стеклянная карточка)</option>
+                <option value="cyber">⚡ Cyber / Tactical (Valorant / Apex)</option>
+                <option value="pill">💊 Minimal Pill (Компактная капсула)</option>
+                <option value="ecg">📈 ECG Monitor (Хоррор / Кардиомонитор)</option>
+                <option value="arc">🎯 Arc / Gauge (Круговой спидометр)</option>
+            </select>
+        </div>
+
+        <div class="grp sim-box">
+            <div class="label-row" style="margin-bottom: 8px;">
+                <span class="grp-title" style="margin:0; color:#c084fc;">⚡ ТЕСТОВЫЙ ПУЛЬС (СИМУЛЯТОР)</span>
+                <label class="switch">
+                    <input type="checkbox" id="simToggle" onchange="toggleSimulator(this.checked)">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Текущий тест: <strong id="simBpmVal" style="color:#fff;">75</strong> BPM</span>
+                <input type="range" id="simBpmRange" min="45" max="210" step="1" value="75" class="ui-range" oninput="onSimSliderInput(this.value)">
+            </div>
+            <button type="button" class="btn-ui btn-clutch" id="btnClutchSim" onclick="startClutchSimulation()">
+                🔥 Симуляция клатча (65 → 165 BPM)
+            </button>
+        </div>
+
+        <div class="grp">
+            <div class="grp-title">РЕЖИМ ВИЗУАЛА И МЕДИА</div>
+            <select id="sVisualMode" class="ui-select">
+                <option value="one_gif">🎬 Одно медиа (на все зоны)</option>
+                <option value="smart">🧠 Умная смена (3 уровня пульса)</option>
+                <option value="icon">❤️ Векторное сердце</option>
+            </select>
+            <div class="hint-text">Поддерживаются: GIF, WebM (прозрачный), MP4, WebP, APNG/PNG (до 15 МБ)</div>
+        </div>
+
+        <div id="sec-one-gif" class="grp section-hidden">
+            <div class="grp-title">ГЛОБАЛЬНОЕ МЕДИА</div>
+            <div class="gif-row">
+                <button type="button" class="btn-ui btn-primary" style="flex:1" onclick="uploadGif('global')">Загрузить файл...</button>
+                <button type="button" class="btn-ui btn-danger" onclick="clearGif('global')" title="Удалить">✕</button>
+            </div>
+        </div>
+
+        <div id="sec-smart" class="grp section-hidden">
+            <div class="grp-title">МЕДИА ПО УРОВНЯМ ПУЛЬСА</div>
+            <div class="zone-row" style="--zone-c: #00ffcc">
+                <span class="zone-name">1. Норма</span>
+                <div class="btn-group">
+                    <button type="button" class="btn-ui" onclick="uploadGif('low')">Загрузить</button>
+                    <button type="button" class="btn-ui btn-danger" onclick="clearGif('low')" title="Сбросить">✕</button>
+                </div>
+            </div>
+            <div class="zone-row" style="--zone-c: #ffaa00">
+                <span class="zone-name">2. Средний</span>
+                <div class="btn-group">
+                    <button type="button" class="btn-ui" onclick="uploadGif('med')">Загрузить</button>
+                    <button type="button" class="btn-ui btn-danger" onclick="clearGif('med')" title="Сбросить">✕</button>
+                </div>
+            </div>
+            <div class="zone-row" style="--zone-c: #ff0055">
+                <span class="zone-name">3. Высокий</span>
+                <div class="btn-group">
+                    <button type="button" class="btn-ui" onclick="uploadGif('high')">Загрузить</button>
+                    <button type="button" class="btn-ui btn-danger" onclick="clearGif('high')" title="Сбросить">✕</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="grp">
+            <div class="grp-title">АНИМАЦИЯ МЕДИА И ЦИФР</div>
+            <div class="label-row">
+                <span class="lbl">Масштаб медиа</span>
+                <input type="range" id="sGifScale" min="0.5" max="3.0" step="0.1" value="1.0" class="ui-range">
+            </div>
+            <div class="label-row">
+                <span class="lbl">Пульсация медиа в такт</span>
+                <label class="switch"><input type="checkbox" id="sGifPulse"><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Динамика цифр</span>
+                <select id="sNumberAnim" class="ui-select" style="width: 155px;">
+                    <option value="odometer">Прокрутка + импульс</option>
+                    <option value="pop">Только импульс</option>
+                    <option value="none">Без анимации</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grp">
+            <div class="grp-title">ЦВЕТА И ПОРОГИ ЗОН</div>
+            <div class="zone-row" style="--zone-c: #00ffcc">
+                <span class="zone-name">1. Норма</span>
+                <input type="color" id="sCLow" value="#00ffcc">
+            </div>
+            <div class="zone-row" style="--zone-c: #ffaa00">
+                <span class="zone-name">2. Средний (&ge; <span id="v_t_med">100</span>)</span>
+                <div class="btn-group">
+                    <input type="number" id="sTMed" min="40" max="240" value="100" class="ui-num">
+                    <input type="color" id="sCMed" value="#ffaa00">
+                </div>
+            </div>
+            <div class="zone-row" style="--zone-c: #ff0055">
+                <span class="zone-name">3. Высокий (&ge; <span id="v_t_high">140</span>)</span>
+                <div class="btn-group">
+                    <input type="number" id="sTHigh" min="45" max="260" value="140" class="ui-num">
+                    <input type="color" id="sCHigh" value="#ff0055">
+                </div>
+            </div>
+            <div class="label-row" style="margin-top: 10px;">
+                <span class="lbl">Плавный градиент (Color Lerp)</span>
+                <label class="switch"><input type="checkbox" id="sColorLerp" checked><span class="slider"></span></label>
+            </div>
+        </div>
+
+        <div class="grp">
+            <div class="grp-title">СТРЕСС-ДЕТЕКТОР И ЗВУК</div>
+            <div class="label-row">
+                <span class="lbl">Бейдж скачка пульса (+BPM ⚡)</span>
+                <label class="switch"><input type="checkbox" id="sShowDelta" checked><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Порог скачка за 5 сек</span>
+                <input type="number" id="sDeltaThresh" min="4" max="60" value="12" class="ui-num">
+            </div>
+            <div class="label-row" style="margin-top: 8px;">
+                <span class="lbl">Звук сердца в высокой зоне</span>
+                <label class="switch"><input type="checkbox" id="sAudioEnabled"><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Громкость биения</span>
+                <input type="range" id="sAudioVolume" min="0.05" max="1.0" step="0.05" value="0.35" class="ui-range">
+            </div>
+        </div>
+
+        <div class="grp">
+            <div class="grp-title">ЭЛЕМЕНТЫ И ЛИМИТЫ HUD</div>
+            <div class="label-row">
+                <span class="lbl">Мин. пульс (шкала/график)</span>
+                <input type="number" id="sBpmMin" min="20" max="250" value="50" class="ui-num">
+            </div>
+            <div class="label-row">
+                <span class="lbl">Макс. пульс (шкала/график)</span>
+                <input type="number" id="sBpmMax" min="30" max="300" value="200" class="ui-num">
+            </div>
+            <div class="label-row" style="margin-top: 10px;">
+                <span class="lbl">Верхняя плашка (AVG / Заголовок)</span>
+                <label class="switch"><input type="checkbox" id="sShowHeader"><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Свой текст заголовка</span>
+                <input type="text" id="sCustomTitle" maxlength="40" placeholder="Пусто = без текста" class="ui-text">
+            </div>
+            <div class="label-row" style="margin-top: 6px;">
+                <span class="lbl">Показывать пик (MAX)</span>
+                <label class="switch"><input type="checkbox" id="sShowPeak" checked><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Шкала нагрузки</span>
+                <label class="switch"><input type="checkbox" id="sShowBar" checked><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">График / Осциллограф</span>
+                <label class="switch"><input type="checkbox" id="sShowGraph" checked><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Линии порогов на графике</span>
+                <label class="switch"><input type="checkbox" id="sGraphThresholds" checked><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Фон карточки (Glass)</span>
+                <label class="switch"><input type="checkbox" id="sBg" checked><span class="slider"></span></label>
+            </div>
+            <div class="label-row">
+                <span class="lbl">Плотность фона</span>
+                <input type="range" id="sBgOpacity" min="0.1" max="1.0" step="0.05" value="0.85" class="ui-range">
+            </div>
+        </div>
+
+        <div class="grp">
+            <div class="grp-title">РАЗМЕР И ПОЗИЦИЯ НА ЭКРАНЕ</div>
+            <div class="label-row">
+                <span class="lbl">Масштаб виджета</span>
+                <input type="range" id="sSize" min="50" max="250" value="100" class="ui-range">
+            </div>
+            <div class="label-row">
+                <span class="lbl">Привязка к краю</span>
+                <select id="sPos" class="ui-select" style="width: 165px;">
+                    <option value="pos-center">По центру</option>
+                    <option value="pos-top-left">Сверху слева</option>
+                    <option value="pos-top-center">Сверху по центру</option>
+                    <option value="pos-top-right">Сверху справа</option>
+                    <option value="pos-left">Слева по центру</option>
+                    <option value="pos-right">Справа по центру</option>
+                    <option value="pos-bottom-left">Снизу слева</option>
+                    <option value="pos-bottom-center">Снизу по центру</option>
+                    <option value="pos-bottom-right">Снизу справа</option>
+                    <option value="pos-bottom">Снизу справа (классика)</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="grp" style="border: none; padding-bottom: 0;">
+            <div class="grp-title">ССЫЛКА ДЛЯ OBS BROWSER SOURCE</div>
+            <div class="obs-copy-row">
+                <input type="text" id="obsLinkField" readonly onclick="this.select()">
+                <button type="button" class="btn-copy" id="btnCopyObs" onclick="copyObsLink()">Копировать</button>
+            </div>
+            <div class="hint-text" id="obsCopyHint">Вставь ссылку в источник «Браузер» в OBS (1920×1080)</div>
+        </div>
+
+        <input type="file" id="hiddenInput" style="display:none" accept=".gif,.webm,.mp4,.webp,.png,.apng,image/*,video/webm,video/mp4">
+    </aside>
+
+    <div id="pos-wrapper" class="pos-center">
+        <div id="scaler">
+            <div class="card has-bg" id="cardBase" data-layout="classic">
+                <div class="cyber-corners" aria-hidden="true"></div>
+
+                <div class="hud-header-bar" id="hudHeaderBar">
+                    <span class="hud-tag" id="hudTitleTag"></span>
+                    <span class="hud-avg">AVG <strong id="hudAvgVal">--</strong></span>
+                </div>
+
+                <div class="row-main">
+                    <div class="media-container" id="mediaContainer">
+                        <svg class="arc-gauge-svg" viewBox="0 0 120 120" aria-hidden="true">
+                            <defs>
+                                <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="var(--primary)" stop-opacity="0.45" />
+                                    <stop offset="100%" stop-color="var(--primary)" stop-opacity="1" />
+                                </linearGradient>
+                            </defs>
+                            <circle class="arc-track" cx="60" cy="60" r="52"></circle>
+                            <circle class="arc-fill" id="arcFill" cx="60" cy="60" r="52"></circle>
+                        </svg>
+
+                        <div class="ripple" id="heartRipple"></div>
+
+                        <div id="defaultIcon" class="icon-heart beating">
+                            <svg viewBox="0 0 24 24" class="heart-svg">
+                                <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                            </svg>
+                        </div>
+
+                        <img id="customGif" class="custom-gif" alt="">
+                        <video id="customVideo" class="custom-video" autoplay loop muted playsinline></video>
+                    </div>
+
+                    <div class="readout-group">
+                        <div class="bpm-value-wrap">
+                            <div class="bpm-value" id="val" data-text="--">--</div>
+                            <div class="delta-badge" id="deltaBadge">+0 ⚡</div>
+                        </div>
+
+                        <div class="bpm-side">
+                            <div class="bpm-unit">
+                                <span class="live-dot"></span>
+                                <span class="unit-txt">BPM</span>
+                            </div>
+                            <div class="peak-badge" id="peakRow" title="Максимальный пульс за сессию">
+                                <span class="peak-lbl">MAX</span>
+                                <span id="peak">0</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="graph-wrap" id="graphWrap">
+                    <canvas id="hrGraph" width="260" height="48"></canvas>
+                </div>
+
+                <div class="hp-container" id="hpRow">
+                    <div class="hp-fill" id="hpFill"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,17 @@
+# Виртуальное окружение Python (тяжёлые библиотеки)
+venv/
+__pycache__/
+
+# Ваши личные настройки (внутри записан MAC-адрес датчика) и логи
+hr_config_lite.json
+hr_config_lite.tmp
+hr_monitor.log
+reports/
+
+# Загруженные вами гифки и видео
+static/gifs/*
+
+# Прочие временные файлы
+repomix-output*
+.idea/
+.vscode/

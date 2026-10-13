@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 230" width="100%">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0b0e14"/>
+      <stop offset="100%" stop-color="#111622"/>
+    </linearGradient>
+    <linearGradient id="arcG" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#a855f7" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#ec4899" stop-opacity="1"/>
+    </linearGradient>
+    <pattern id="ecgGrid" width="12" height="12" patternUnits="userSpaceOnUse">
+      <path d="M 12 0 L 0 0 0 12" fill="none" stroke="#ff0055" stroke-width="0.6" stroke-opacity="0.18"/>
+    </pattern>
+  </defs>
+
+  <rect width="960" height="230" rx="16" fill="url(#bg)" stroke="#ffffff" stroke-opacity="0.08" stroke-width="1.5"/>
+
+  <!-- 1. CLASSIC CARD -->
+  <g transform="translate(20, 22)">
+    <text x="82" y="14" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-weight="700" font-size="11">1. CLASSIC CARD</text>
+    <rect x="0" y="26" width="165" height="160" rx="18" fill="#151924" stroke="#00ffcc" stroke-opacity="0.35" stroke-width="1.2"/>
+    <circle cx="40" cy="76" r="16" fill="#00ffcc" fill-opacity="0.15"/>
+    <text x="40" y="82" text-anchor="middle" fill="#00ffcc" font-size="18">❤️</text>
+    <text x="66" y="88" fill="#ffffff" font-family="'Segoe UI', sans-serif" font-weight="900" font-size="36">84</text>
+    <text x="118" y="75" fill="#00ffcc" font-family="monospace" font-weight="800" font-size="9">BPM</text>
+    <path d="M 16 135 Q 45 125, 80 132 T 148 118" fill="none" stroke="#00ffcc" stroke-width="2.2" stroke-linecap="round"/>
+    <rect x="16" y="156" width="132" height="6" rx="3" fill="#0b0e14"/>
+    <rect x="16" y="156" width="64" height="6" rx="3" fill="#00ffcc"/>
+  </g>
+
+  <!-- 2. CYBER / TACTICAL -->
+  <g transform="translate(208, 22)">
+    <text x="82" y="14" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-weight="700" font-size="11">2. CYBER / TACTICAL</text>
+    <polygon points="0,26 150,26 165,41 165,186 15,186 0,171" fill="#10141f" stroke="#ffaa00" stroke-opacity="0.55" stroke-width="1.5"/>
+    <line x1="0" y1="26" x2="0" y2="171" stroke="#ffaa00" stroke-width="4"/>
+    <text x="16" y="44" fill="#64748b" font-family="monospace" font-weight="700" font-size="8">AVG 112</text>
+    <text x="22" y="96" fill="#ffaa00" font-size="22">⚡</text>
+    <text x="52" y="102" fill="#ffffff" font-family="monospace" font-weight="900" font-size="38">134</text>
+    <path d="M 16 142 L 42 138 L 70 144 L 102 126 L 148 120" fill="none" stroke="#ffaa00" stroke-width="2.2"/>
+    <rect x="16" y="160" width="132" height="8" fill="#090b10" stroke="#ffaa00" stroke-opacity="0.4"/>
+    <rect x="16" y="160" width="98" height="8" fill="#ffaa00"/>
+  </g>
+
+  <!-- 3. MINIMAL PILL -->
+  <g transform="translate(396, 22)">
+    <text x="82" y="14" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-weight="700" font-size="11">3. MINIMAL PILL</text>
+    <rect x="0" y="26" width="165" height="160" rx="18" fill="#151924" fill-opacity="0.35" stroke="#ffffff" stroke-opacity="0.05" stroke-dasharray="4 4"/>
+    <rect x="6" y="84" width="153" height="44" rx="22" fill="#151924" stroke="#00ffcc" stroke-opacity="0.45" stroke-width="1.5"/>
+    <circle cx="28" cy="106" r="11" fill="#00ffcc" fill-opacity="0.16"/>
+    <text x="28" y="111" text-anchor="middle" fill="#00ffcc" font-size="12">❤️</text>
+    <text x="46" y="115" fill="#ffffff" font-family="'Segoe UI', sans-serif" font-weight="900" font-size="24">72</text>
+    <text x="80" y="110" fill="#00ffcc" font-family="monospace" font-weight="800" font-size="8">BPM</text>
+    <path d="M 104 112 Q 118 102, 132 108 T 150 100" fill="none" stroke="#00ffcc" stroke-width="2" stroke-linecap="round"/>
+  </g>
+
+  <!-- 4. ECG MONITOR -->
+  <g transform="translate(584, 22)">
+    <text x="82" y="14" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-weight="700" font-size="11">4. ECG MONITOR</text>
+    <rect x="0" y="26" width="165" height="160" rx="12" fill="#080d11" stroke="#ff0055" stroke-opacity="0.5" stroke-width="1.4"/>
+    <text x="24" y="82" fill="#ff0055" font-size="20">❤️</text>
+    <text x="54" y="88" fill="#ff0055" font-family="monospace" font-weight="900" font-size="36">162</text>
+    <rect x="14" y="106" width="137" height="64" rx="6" fill="url(#ecgGrid)" stroke="#ff0055" stroke-opacity="0.3"/>
+    <path d="M 18 142 L 38 142 L 44 136 L 50 142 L 55 148 L 62 114 L 68 156 L 74 142 L 84 134 L 92 142 L 118 142 L 125 114 L 131 156 L 137 142 L 147 142" fill="none" stroke="#ff0055" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    <circle cx="147" cy="142" r="3" fill="#ffffff"/>
+  </g>
+
+  <!-- 5. ARC / GAUGE -->
+  <g transform="translate(772, 22)">
+    <text x="82" y="14" text-anchor="middle" fill="#94a3b8" font-family="monospace" font-weight="700" font-size="11">5. ARC / GAUGE</text>
+    <rect x="0" y="26" width="165" height="160" rx="22" fill="#151924" stroke="#ec4899" stroke-opacity="0.35" stroke-width="1.2"/>
+    <circle cx="82" cy="82" r="32" fill="none" stroke="#ffffff" stroke-opacity="0.1" stroke-width="6"/>
+    <circle cx="82" cy="82" r="32" fill="none" stroke="url(#arcG)" stroke-width="6" stroke-linecap="round" stroke-dasharray="150 200" transform="rotate(-90 82 82)"/>
+    <text x="82" y="89" text-anchor="middle" fill="#ec4899" font-size="20">❤️</text>
+    <text x="82" y="152" text-anchor="middle" fill="#ffffff" font-family="'Segoe UI', sans-serif" font-weight="900" font-size="30">118</text>
+    <text x="82" y="172" text-anchor="middle" fill="#ec4899" font-family="monospace" font-weight="800" font-size="9">BPM // MAX 154</text>
+  </g>
+</svg>

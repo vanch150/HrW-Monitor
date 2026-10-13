@@ -1,0 +1,118 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 320" width="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#090b10"/>
+      <stop offset="50%" stop-color="#0f1420"/>
+      <stop offset="100%" stop-color="#090b10"/>
+    </linearGradient>
+    <radialGradient id="glowCyan" cx="72%" cy="50%" r="40%">
+      <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.18"/>
+      <stop offset="100%" stop-color="#00ffcc" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="glowPink" cx="25%" cy="50%" r="45%">
+      <stop offset="0%" stop-color="#ff0055" stop-opacity="0.12"/>
+      <stop offset="100%" stop-color="#ff0055" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="cardBg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#161b26" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="#0b0e14" stop-opacity="0.95"/>
+    </linearGradient>
+    <linearGradient id="graphFill" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00ffcc" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#00ffcc" stop-opacity="0.0"/>
+    </linearGradient>
+    <linearGradient id="badgeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff0055"/>
+      <stop offset="100%" stop-color="#ff7700"/>
+    </linearGradient>
+    <pattern id="dots" x="0" y="0" width="24" height="24" patternUnits="userSpaceOnUse">
+      <circle cx="2" cy="2" r="1" fill="#ffffff" fill-opacity="0.06"/>
+    </pattern>
+    <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+    <filter id="cardShadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="16" stdDeviation="20" flood-color="#000000" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="960" height="320" rx="18" fill="url(#bgGrad)"/>
+  <rect width="960" height="320" rx="18" fill="url(#dots)"/>
+  <rect width="960" height="320" rx="18" fill="url(#glowCyan)"/>
+  <rect width="960" height="320" rx="18" fill="url(#glowPink)"/>
+  <rect x="1" y="1" width="958" height="318" rx="17" fill="none" stroke="#ffffff" stroke-opacity="0.08" stroke-width="2"/>
+
+  <!-- Left Side: Title & Badges -->
+  <g transform="translate(56, 72)">
+    <rect x="0" y="0" width="168" height="26" rx="13" fill="#00ffcc" fill-opacity="0.12" stroke="#00ffcc" stroke-opacity="0.4"/>
+    <circle cx="14" cy="13" r="4" fill="#00ffcc"/>
+    <text x="26" y="17" fill="#00ffcc" font-family="monospace" font-weight="700" font-size="11" letter-spacing="1">OBS STUDIO READY</text>
+
+    <text x="0" y="78" fill="#ffffff" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="48" letter-spacing="-1">HrW Monitor</text>
+    <text x="0" y="112" fill="#94a3b8" font-family="'Segoe UI', Roboto, sans-serif" font-weight="600" font-size="17">Real-Time BLE Heart Rate HUD Overlay for Streamers</text>
+
+    <g transform="translate(0, 142)" font-family="monospace" font-weight="700" font-size="12" fill="#e2e8f0">
+      <rect x="0" y="0" width="110" height="30" rx="8" fill="#1e293b" stroke="#334155"/>
+      <text x="16" y="19">⚡ 60 FPS</text>
+
+      <rect x="122" y="0" width="136" height="30" rx="8" fill="#1e293b" stroke="#334155"/>
+      <text x="138" y="19">🎨 5 HUD Styles</text>
+
+      <rect x="270" y="0" width="155" height="30" rx="8" fill="#1e293b" stroke="#334155"/>
+      <text x="286" y="19">🎬 GIF / WebM / MP4</text>
+    </g>
+  </g>
+
+  <!-- Right Side: Live HUD Card Preview -->
+  <g transform="translate(565, 42)" filter="url(#cardShadow)">
+    <rect x="0" y="0" width="335" height="236" rx="24" fill="url(#cardBg)" stroke="#ffffff" stroke-opacity="0.12" stroke-width="1.5"/>
+    <line x1="28" y1="1" x2="307" y2="1" stroke="#00ffcc" stroke-width="2" stroke-opacity="0.85"/>
+
+    <!-- Heart Icon & Ripple -->
+    <g transform="translate(58, 72)">
+      <circle cx="0" cy="0" r="34" fill="#00ffcc" fill-opacity="0.08" stroke="#00ffcc" stroke-opacity="0.25" stroke-width="1.5"/>
+      <circle cx="0" cy="0" r="24" fill="#00ffcc" fill-opacity="0.14"/>
+      <path d="M0 15 L-2.1 13.1 C-9.6 6.3 -14.5 1.9 -14.5 -3.6 C-14.5 -8.1 -11 -11.6 -6.5 -11.6 C-4 -11.6 -1.5 -10.4 0 -8.5 C1.5 -10.4 4 -11.6 6.5 -11.6 C11 -11.6 14.5 -8.1 14.5 -3.6 C14.5 1.9 9.6 6.3 2.1 13.1 Z" fill="#00ffcc" transform="scale(1.35)" filter="url(#neonGlow)"/>
+    </g>
+
+    <!-- BPM Readout -->
+    <text x="112" y="102" fill="#ffffff" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="76" letter-spacing="-3" filter="url(#neonGlow)">128</text>
+
+    <!-- Delta Stress Badge -->
+    <g transform="translate(222, 26)">
+      <rect x="0" y="0" width="54" height="22" rx="11" fill="url(#badgeGrad)" stroke="#ffffff" stroke-opacity="0.4"/>
+      <text x="10" y="15" fill="#ffffff" font-family="monospace" font-weight="800" font-size="11">+18 ⚡</text>
+    </g>
+
+    <!-- Side Unit & Peak -->
+    <g transform="translate(254, 58)">
+      <circle cx="5" cy="8" r="3.5" fill="#00ffcc"/>
+      <text x="14" y="12" fill="#00ffcc" font-family="'Segoe UI', sans-serif" font-weight="800" font-size="13" letter-spacing="1.5">BPM</text>
+
+      <rect x="0" y="22" width="60" height="22" rx="6" fill="#0f121a" stroke="#ffffff" stroke-opacity="0.14"/>
+      <text x="7" y="36" fill="#94a3b8" font-family="sans-serif" font-weight="800" font-size="8">MAX</text>
+      <text x="31" y="37" fill="#f8fafc" font-family="monospace" font-weight="700" font-size="11">164</text>
+    </g>
+
+    <!-- 60 FPS Spline Graph -->
+    <g transform="translate(24, 134)">
+      <line x1="0" y1="14" x2="287" y2="14" stroke="#ffffff" stroke-opacity="0.15" stroke-dasharray="3 4"/>
+      <text x="4" y="11" fill="#ffffff" fill-opacity="0.4" font-family="monospace" font-size="9">140</text>
+      <line x1="0" y1="36" x2="287" y2="36" stroke="#ffffff" stroke-opacity="0.15" stroke-dasharray="3 4"/>
+      <text x="4" y="33" fill="#ffffff" fill-opacity="0.4" font-family="monospace" font-size="9">100</text>
+
+      <path d="M0 42 Q 35 40, 65 34 T 130 30 T 195 18 T 250 24 T 282 12 L 282 54 L 0 54 Z" fill="url(#graphFill)"/>
+      <path d="M0 42 Q 35 40, 65 34 T 130 30 T 195 18 T 250 24 T 282 12" fill="none" stroke="#00ffcc" stroke-width="2.8" stroke-linecap="round"/>
+      <circle cx="282" cy="12" r="4" fill="#ffffff" filter="url(#neonGlow)"/>
+    </g>
+
+    <!-- Load Bar -->
+    <g transform="translate(24, 204)">
+      <rect x="0" y="0" width="287" height="8" rx="4" fill="#0b0e16" stroke="#ffffff" stroke-opacity="0.12"/>
+      <rect x="0" y="0" width="195" height="8" rx="4" fill="#00ffcc" filter="url(#neonGlow)"/>
+      <circle cx="192" cy="4" r="3" fill="#ffffff"/>
+    </g>
+  </g>
+</svg>
